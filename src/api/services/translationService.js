@@ -1,20 +1,20 @@
-import { getTranslation } from "@pkg/yandex-traslator"
+// import { getTranslation } from '@pkg/yandex-traslator'
 
 export const getTranslations = async (req, res) => {
-    try {
-        const {
-            text,
-        } = req.body;
+  try {
+    // const {
+    //   text
+    // } = req.body
 
-        const textTransation = getTranslation(text);
+    // const textTransation = getTranslation(text)
 
-        if (!translation) {
-            return response.notFound(res, 'Translation not found');
-        }
+    // if (!translation) {
+    //   return response.notFound(res, 'Translation not found')
+    // }
 
-        return res.send({ data: { text: translation } });
-    } catch (error) {
-        console.log(error)
-        return res.sendStatus(500);
-    }
-};
+    // return res.send({ data: { text: translation } })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}

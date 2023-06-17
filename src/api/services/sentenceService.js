@@ -1,28 +1,62 @@
-import { firestoreCollection, addDoc, getDoc, doc, collection, query, where, getDocs, db, deleteDoc, updateDoc, orderBy, limit, startAt } from '@pkg/firestore'
-import logger from '@pkg/logger';
+import { createNewSentence, getSentenceById, getSentenceList } from '@pkg/firestore'
+import logger from '@pkg/logger'
 
-async function addSentence(req, res) {
+const addSentence = async (req, res) => {
   try {
-    const sentence = await addDoc(firestoreCollection, { data: req.body });
+    const sentence = await createNewSentence()
 
-    return res.send({ data: { id: sentence.id } });
+    return res.send({ data: { id: sentence.id } })
   } catch (err) {
     logger.error(err)
     return res.sendStatus(500)
   }
-};
+}
 
-async function getSentences(req, res) {
+const getSentences = async (req, res) => {
   try {
-    // chear que solo dos valores!
-    const { order, offset, lmt } = req.query;
+    const { order, offset, lmt } = req.query
 
-    const q = query(firestoreCollection, orderBy("data.category", order), startAt(offset), limit(lmt));
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = getSentenceList(order, offset, lmt)
 
-    const sentenceList = querySnapshot.docs.map(doc => doc.data().data);
+    const sentenceList = querySnapshot.docs.map(doc => {
+      return { id: doc.id, ...doc.data().data }
+    })
 
-    return res.send(sentenceList);
+    return res.send(sentenceList)
+  } catch (err) {
+    logger.error(err)
+    return res.sendStatus(500)
+  }
+}
+
+const getSentence = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const sentence = getSentenceById(id)
+
+    if (!sentence) {
+      return res.send({ data: `sentence not found for id ${id}` })
+    }
+
+    return res.send({ id: sentence.id, ...sentence.data().data })
+  } catch (err) {
+    logger.error(err)
+    return res.sendStatus(500)
+  }
+}
+
+const deleteSentence = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    await deleteSentence(id)
+
+    // if (!docSnap) {
+    //   return res.send({ data: 'Sentence not found' })
+    // }
+
+    // return res.send(docSnap.data())
   } catch (err) {
     console.log(err)
     logger.error(err)
@@ -30,64 +64,18 @@ async function getSentences(req, res) {
   }
 }
 
-async function getSentence(req, res) {
+const updateSentence = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
 
-    const docRef = doc(db, "sentences", id)
-    const docSnap = await getDoc(docRef);
+    await updateSentence(id, req.body)
 
-    if (!docSnap) {
-      return res.send({ data: 'Sentence not found' });
-    }
-
-    return res.send(docSnap.data());
+    return res.send()
   } catch (err) {
-    console.log(err)
     logger.error(err)
     return res.sendStatus(500)
   }
-};
-
-async function deleteSentence(req, res) {
-  try {
-    const { id } = req.params;
-
-    const docRef = doc(db, "sentences", id)
-    const docSnap = await deleteDoc(docRef);
-
-    if (!docSnap) {
-      return res.send({ data: 'Sentence not found' });
-    }
-
-    return res.send(docSnap.data());
-  } catch (err) {
-    console.log(err)
-    logger.error(err)
-    return res.sendStatus(500)
-  }
-};
-
-async function updateSentence(req, res) {
-  try {
-    const { id } = req.params;
-
-    const sentenceRef = doc(db, "sentences", id)
-
-    console.log({ ...req.body })
-
-    // Remove the 'capital' field from the document
-    await updateDoc(sentenceRef, {
-      data: { ...req.body }
-    });
-
-    return res.send();
-  } catch (err) {
-    console.log(err)
-    logger.error(err)
-    return res.sendStatus(500)
-  }
-};
+}
 
 export {
   addSentence,

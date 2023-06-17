@@ -17,10 +17,41 @@
     <label for="text">Text:</label>
     <textarea id="text" name="text" required></textarea>
 
-    <label for="skills">Skills:</label>
-    <input type="text" id="skills" name="skills" required>
+    <label for="benefit">Benefit:</label>
+    <input type="number" id="benefit" name="benefit" min="0" required>
+
+    <label for="none">None:</label>
+    <input type="number" id="none" name="none" min="0" required>
+
+    <label for="education">Education:</label>
+    <input type="number" id="education" name="education" min="0" required>
+
+    <label for="tech">Tech:</label>
+    <input type="number" id="tech" name="tech" min="0" required>
+
+    <label for="soft">Soft:</label>
+    <input type="number" id="soft" name="soft" min="0" required>
+
+    <label for="responsibility">Responsibility:</label>
+    <input type="number" id="responsibility" name="responsibility" min="0" required>
+
+    <label for="experience">Experience:</label>
+    <input type="number" id="experience" name="experience" min="0" required>
 
     <input type="submit" value="Create Sentence">
+  </form>
+
+  <form id="fetch-form">
+    <label for="order">Order:</label>
+    <input type="checkbox" id="order" name="order" value="asc">
+
+    <label for="offset">Offset:</label>
+    <input type="number" id="offset" name="offset" min="0" value="1">
+
+    <label for="limit">Limit:</label>
+    <input type="number" id="limit" name="limit" min="1" value="3">
+
+    <input type="submit" value="Fetch Sentences">
   </form>
 
   <table id="sentences-table">
@@ -39,11 +70,22 @@
 
   <script>
     // Fetch sentences from the API and populate the table
-    function fetchSentences() {
-      const headers = new Headers();
-      headers.append('Cookie', btoa('your-cookie-value'));
+    function fetchSentences(event) {
+      if (event) {
+        event.preventDefault();
+      }
 
-      fetch('http://localhost:3000/api/sentences?order=asc&offset=1&lmt=3', {
+      const order = document.querySelector('#order').checked ? 'desc' : 'asc';
+      const offset = parseInt(document.querySelector('#offset').value);
+      const limit = parseInt(document.querySelector('#limit').value);
+
+      const authToken = 'your-auth-token'; // Replace with your actual authentication token
+      const headers = new Headers();
+      headers.append('Authorization', `Bearer ${authToken}`);
+
+      const url = `http://localhost:3000/api/sentences?order=${order}&offset=${offset}&lmt=${limit}`;
+
+      fetch(url, {
         headers: headers
       })
         .then(response => response.json())
@@ -54,14 +96,14 @@
           sentences.forEach(sentence => {
             const row = document.createElement('tr');
             row.innerHTML = `
-              <td>${sentence.category}</td>
-              <td>${sentence.text}</td>
-              <td>${sentence.skills}</td>
-              <td class="actions">
-                <button onclick="deleteSentence(${sentence.id})">Delete</button>
-                <button onclick="updateSentence(${sentence.id})">Update</button>
-              </td>
-            `;
+                      <td>${sentence.category}</td>
+                      <td>${sentence.text}</td>
+                      <td>${JSON.stringify(sentence.skills)}</td>
+                      <td class="actions">
+                        <button onclick="deleteSentence('${sentence.id}')">Delete</button>
+                        <button onclick="updateSentence('${sentence.id}')">Update</button>
+                      </td>
+                    `;
             tableBody.appendChild(row);
           });
         })
@@ -76,7 +118,23 @@
 
       const category = document.querySelector('#category').value;
       const text = document.querySelector('#text').value;
-      const skills = document.querySelector('#skills').value;
+      const benefit = parseInt(document.querySelector('#benefit').value);
+      const none = parseInt(document.querySelector('#none').value);
+      const education = parseInt(document.querySelector('#education').value);
+      const tech = parseInt(document.querySelector('#tech').value);
+      const soft = parseInt(document.querySelector('#soft').value);
+      const responsibility = parseInt(document.querySelector('#responsibility').value);
+      const experience = parseInt(document.querySelector('#experience').value);
+
+      const skills = {
+        benefit,
+        none,
+        education,
+        tech,
+        soft,
+        responsibility,
+        experience
+      };
 
       const sentence = {
         category,
@@ -84,17 +142,26 @@
         skills
       };
 
+      const authToken = 'your-auth-token'; // Replace with your actual authentication token
+      const headers = new Headers();
+      headers.append('Authorization', `Bearer ${authToken}`);
+      headers.append('Content-Type', 'application/json');
+
       fetch('http://localhost:3000/api/sentences', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: headers,
         body: JSON.stringify(sentence)
       })
         .then(() => {
           document.querySelector('#category').value = '';
           document.querySelector('#text').value = '';
-          document.querySelector('#skills').value = '';
+          document.querySelector('#benefit').value = '';
+          document.querySelector('#none').value = '';
+          document.querySelector('#education').value = '';
+          document.querySelector('#tech').value = '';
+          document.querySelector('#soft').value = '';
+          document.querySelector('#responsibility').value = '';
+          document.querySelector('#experience').value = '';
           fetchSentences();
         })
         .catch(error => {
@@ -104,9 +171,14 @@
 
     // Delete a sentence
     function deleteSentence(sentenceId) {
+      const authToken = 'your-auth-token'; // Replace with your actual authentication token
+      const headers = new Headers();
+      headers.append('Authorization', `Bearer ${authToken}`);
+
       if (confirm('Are you sure you want to delete this sentence?')) {
         fetch(`http://localhost:3000/api/sentences/${sentenceId}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: headers
         })
           .then(() => {
             fetchSentences();
@@ -125,6 +197,9 @@
 
     // Event listener for form submission
     document.querySelector('#create-form').addEventListener('submit', createSentence);
+
+    // Event listener for form submission
+    document.querySelector('#fetch-form').addEventListener('submit', fetchSentences);
 
     // Initial fetch to populate the table
     fetchSentences();

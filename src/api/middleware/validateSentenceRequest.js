@@ -1,4 +1,4 @@
-import { body, query, validationResult } from 'express-validator';
+import { body, query, validationResult } from 'express-validator'
 
 export const sentenceValidationRulesAddSentence = () => [
   body('text').notEmpty().withMessage('text field is required'),
@@ -22,7 +22,7 @@ export const sentenceValidationRulesGetSentence = () => [
     .optional()
     .trim()
     .isNumeric().withMessage('lmt is numeric')
-    .isLength({ min: 1, max: 3 }).withMessage('lmt is required'),
+    .isLength({ min: 1, max: 3 }).withMessage('lmt is required')
 ]
 
 export const addSentenceValidation = (req, res, next) => {
@@ -31,9 +31,11 @@ export const addSentenceValidation = (req, res, next) => {
     return next()
   }
   const extractedErrors = []
-  errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
+  errors.array().map(err => extractedErrors.push({
+    [err.param]: err.msg
+  }))
 
   return res.status(422).json({
-    errors: extractedErrors,
+    errors: extractedErrors
   })
 }

@@ -1,13 +1,13 @@
-import { Router } from 'express';
+import { Router } from 'express'
 import { getTranslations } from '../services/translationService.js'
-import { translationValidation, addSentenceValidation } from '../middleware/validateTraslationRequest.js';
+import { translationValidation, addSentenceValidation } from '../middleware/validateTraslationRequest.js'
 
-const translationRoutes = Router();
+const translationRoutes = Router()
 
 const translations = (router) => {
-    router.use('/translation', translationRoutes);
+  router.use('/translation', translationRoutes)
 
-    translationRoutes.post('/', translationValidation(), addSentenceValidation, getTranslations);
-};
+  translationRoutes.post('/', translationValidation(), addSentenceValidation, getTranslations)
+}
 
-export default translations;
+export default translations
