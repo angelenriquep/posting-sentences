@@ -1,0 +1,29 @@
+{
+  "name": "posting-sentences",
+  "version": "1.0.0",
+  "description": "node version 20.XXX",
+  "main": "index.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@pkg/firestore": "file:packages/firestore",
+    "@pkg/logger": "file:packages/logger",
+    "@pkg/yandex-traslator": "file:packages/yandex-traslator",
+    "body-parser": "1.20.1",
+    "cors": "2.8.5",
+    "express": "4.18.2",
+    "express-validator": "7.0.1",
+    "firebase": "9.22.2",
+    "readline": "1.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
