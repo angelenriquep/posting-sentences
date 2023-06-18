@@ -14,12 +14,12 @@
 # done
 
 cd src/packages/deepl-api
-npm i
+npm install
 cd ../..
 cd src/packages/firestore
-npm i
+npm install
 cd ../..
 cd src/packages/logger
-npm i
+npm install
 cd ../..
-npm i
+npm install
