@@ -1,4 +1,6 @@
-.PHONY: load-env install-packages install-deps
+.PHONY: all load-env install-packages install-deps
+
+all: load-env install-packages install-deps
 
 install-packages:
 	. ./install-packages.sh
