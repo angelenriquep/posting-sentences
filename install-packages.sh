@@ -1,25 +1,18 @@
 #!/bin/bash
 
-# cd ./src/packages
+echo "starting deepl"
+cd src/packages/deepl-api 
+npm install 
+cd .. && cd .. && cd .. 
 
-# for dir in */; do
-#   if [ -d "$dir" ]; then
-#     cd "$dir" || continue
-#     echo "Installing dependencies for $dir..."
-#     npm install
-#     cd ..
-#   fi
-# done
-# cd ../../
-# done
+echo "starting firestore"
+cd src/packages/firestore 
+npm install 
+cd .. && cd .. && cd .. 
 
-cd src/packages/deepl-api
-npm install
-cd ../..
-cd src/packages/firestore
-npm install
-cd ../..
-cd src/packages/logger
-npm install
-cd ../..
+echo "starting logger"
+cd src/packages/logger 
+npm install 
+cd .. && cd .. && cd .. 
+
 npm install

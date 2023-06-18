@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "firebase": "9.22.2"
+    "firebase": "9.22.2",
+    "undefined": "^0.1.0"
   }
 }
