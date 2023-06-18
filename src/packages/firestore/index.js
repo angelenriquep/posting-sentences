@@ -19,13 +19,13 @@ const COLLECTION_NAME = 'sentences'
 
 // TODO move this to env (SECURITY ISSUE)
 const firebaseConfig = {
-  apiKey: 'AIzaSyBrRRr9sw9HsLRxJ3bN58IJEKvXPoH1V4w',
-  authDomain: 'sentences-98acb.firebaseapp.com',
-  projectId: 'sentences-98acb',
-  storageBucket: 'sentences-98acb.appspot.com',
-  messagingSenderId: '344774767867',
-  appId: '1:344774767867:web:2fa528aeb4feab70f26c5e',
-  measurementId: 'G-0KYVWGSJJ9'
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT
 }
 
 const app = initializeApp(firebaseConfig)

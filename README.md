@@ -12,10 +12,10 @@ Application Hosting for Developers [link](https://render.com)
 A Makefile has been provided for easy setup:
 
 ```sh
-make
-make install-packages
-make install-deps
+make all
 ```
+
+A `.env` is required to se up all the required variables.
 
 This command will install the necessary packages and dependencies.
 

@@ -1,11 +1,10 @@
 import axios from 'axios'
 
 const url = 'https://api-free.deepl.com/v2/translate'
-const authKey = 'b3a7e4ea-53bf-1e55-d634-b02c8526b380:fx'
 const TARGET_LANG = 'en-GB'
 
 const headers = {
-  Authorization: `DeepL-Auth-Key ${authKey}`,
+  Authorization: `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`,
   'Content-Type': 'application/x-www-form-urlencoded'
 }
 
