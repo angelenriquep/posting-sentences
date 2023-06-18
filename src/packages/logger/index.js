@@ -1,11 +1,13 @@
-import winston from 'winston'
+import { createLogger, format, transports } from 'winston'
 
 const logConfiguration = {
-  transports: [
-    new winston.transports.Console()
-  ]
+  format: format.combine(
+    format.splat(),
+    format.simple()
+  ),
+  transports: [new transports.Console()]
 }
 
-const logger = winston.createLogger(logConfiguration)
+const logger = createLogger(logConfiguration)
 
 export default logger

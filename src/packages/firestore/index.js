@@ -11,7 +11,8 @@ import {
   deleteDoc,
   updateDoc,
   orderBy,
-  startAt
+  startAt,
+  limit
 } from 'firebase/firestore'
 
 const COLLECTION_NAME = 'sentences'
@@ -31,57 +32,57 @@ const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 const firestoreCollection = collection(db, COLLECTION_NAME)
 
-const batch = writeBatch(db)
-const docADocRef = doc(collection(db, COLLECTION_NAME))
-
-const addBatchData = (record) => {
-  console.log('setRecord')
+const createBatch = () => {
+  return writeBatch(db)
+}
+const addBatchData = (batch, record) => {
+  const docADocRef = doc(collection(db, COLLECTION_NAME))
+  console.log('read')
   batch.set(docADocRef, record)
 }
 
-const writeBatchData = () => {
-  console.log('COMMIT')
+const commitBatch = (batch) => {
+  console.log('commit')
   return batch.commit()
 }
 
-const createNewSentence = (data) => {
+const createCollection = (data) => {
   return addDoc(firestoreCollection, { data })
 }
 
-const getSentenceById = (id) => {
+const getCollectionById = (id) => {
   const docRef = doc(db, COLLECTION_NAME, id)
   return getDoc(docRef)
 }
 
-const deleteSentence = (id) => {
+const deleteCollection = (id) => {
   const docRef = doc(db, COLLECTION_NAME, id)
   return deleteDoc(docRef)
 }
 
-const updateSentence = (id, updatedData) => {
+const updateCollection = (id, updatedData) => {
   const docRef = doc(db, COLLECTION_NAME, id)
   return updateDoc(docRef, { data: { ...updatedData } })
 }
 
-const getSentenceList = (orderStr, offsetNum, limitNum) => {
-  let order; let offset; let limit = null
+const getCollectionList = (orderStr, offsetNum, limitNum) => {
+  const order = orderStr || 'asc'
+  const offset = offsetNum || 0
+  const lmt = limitNum || 9_999
 
-  if (!orderStr) order = 'asc' // by default
-  if (!offsetNum) offset = 0
-  if (!limitNum) limit = 99999
-
-  const q = query(firestoreCollection, orderBy('data.category', order), startAt(offset), limit(limit))
+  const q = query(firestoreCollection, orderBy('data.category', order), startAt(offset), limit(lmt))
 
   return getDocs(q)
 }
 
 export {
   firestoreCollection,
-  createNewSentence,
-  getSentenceById,
-  deleteSentence,
-  updateSentence,
+  createCollection,
+  getCollectionById,
+  deleteCollection,
+  updateCollection,
   addBatchData,
-  writeBatchData,
-  getSentenceList
+  commitBatch,
+  getCollectionList,
+  createBatch
 }

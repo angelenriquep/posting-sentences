@@ -1,17 +1,17 @@
 import { Router } from 'express'
 import { getSentences, addSentence, getSentence, deleteSentence, updateSentence } from '../services/sentenceService.js'
-import { sentenceValidationRulesAddSentence, addSentenceValidation, sentenceValidationRulesGetSentence } from '../middleware/validateSentenceRequest.js'
+import { sentenceValidationRulesAddSentence, requestValidation, sentenceValidationRulesGetSentence, containsIdParamRules } from '../middleware/validateSentenceRequest.js'
 
 const sentencesRoutes = Router()
 
 const sentences = (router) => {
   router.use('/sentences', sentencesRoutes)
 
-  sentencesRoutes.get('/', sentenceValidationRulesGetSentence(), addSentenceValidation, getSentences)
-  sentencesRoutes.post('/', sentenceValidationRulesAddSentence(), addSentenceValidation, addSentence)
-  sentencesRoutes.get('/:id', getSentence)
-  sentencesRoutes.delete('/:id', deleteSentence)
-  sentencesRoutes.patch('/:id', updateSentence)
+  sentencesRoutes.get('/', sentenceValidationRulesGetSentence(), requestValidation, getSentences)
+  sentencesRoutes.post('/', sentenceValidationRulesAddSentence(), requestValidation, addSentence)
+  sentencesRoutes.get('/:id', containsIdParamRules(), requestValidation, getSentence)
+  sentencesRoutes.delete('/:id', containsIdParamRules(), requestValidation, deleteSentence)
+  sentencesRoutes.patch('/:id', containsIdParamRules(), requestValidation, updateSentence)
 }
 
 export default sentences

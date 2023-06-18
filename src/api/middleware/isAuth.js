@@ -9,9 +9,9 @@ export const checkAuthToken = (req, res, next) => {
       req.token = token
       next()
     } else {
-      res.status(401).json({ error: 'Invalid authentication token' })
+      res.status(401).send({ error: 'Invalid authentication token' })
     }
   } else {
-    res.status(401).json({ error: 'Authorization header not found' })
+    res.status(401).send({ error: 'Authorization header not found' })
   }
 }

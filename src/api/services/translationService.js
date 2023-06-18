@@ -1,4 +1,4 @@
-// import { getTranslation } from '@pkg/yandex-traslator'
+// import { getTranslation } from '@pkg/yandex-api'
 
 export const getTranslations = async (req, res) => {
   try {

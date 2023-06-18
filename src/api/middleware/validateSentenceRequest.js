@@ -1,11 +1,11 @@
-import { body, query, validationResult } from 'express-validator'
+import { body, query, validationResult, param } from 'express-validator'
 
 export const sentenceValidationRulesAddSentence = () => [
   body('text').notEmpty().withMessage('text field is required'),
   body('category').notEmpty().withMessage('category field is required'),
   body('skills')
-    .notEmpty().withMessage('cats field is required')
-    .isObject().withMessage('cats field should be a list')
+    .notEmpty().withMessage('skills field is required')
+    .isObject().withMessage('skills field should be a list')
 ]
 
 export const sentenceValidationRulesGetSentence = () => [
@@ -25,7 +25,7 @@ export const sentenceValidationRulesGetSentence = () => [
     .isLength({ min: 1, max: 3 }).withMessage('lmt is required')
 ]
 
-export const addSentenceValidation = (req, res, next) => {
+export const requestValidation = (req, res, next) => {
   const errors = validationResult(req)
   if (errors.isEmpty()) {
     return next()
@@ -39,3 +39,7 @@ export const addSentenceValidation = (req, res, next) => {
     errors: extractedErrors
   })
 }
+
+export const containsIdParamRules = () => [
+  param('id').exists().withMessage('id is required field in the URL')
+]

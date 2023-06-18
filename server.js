@@ -3,15 +3,23 @@ import logger from '@pkg/logger'
 import routes from './src/api/index.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import { checkAuthToken } from './src/api/middleware/isAuth.js' // Promote this a separate package
+import { checkAuthToken } from './src/api/middleware/isAuth.js' // Promote this as a separate package
+import timeout from 'connect-timeout'
+
+// Move this to MDW folder?
+const haltOnTimedout = (req, res, next) => {
+  if (!req.timedout) next()
+}
 
 const app = express()
 
+app.use(timeout(120000))
 app.use(bodyParser.json())
 app.use(cors())
 app.use(checkAuthToken)
 
 app.use('/api', routes())
+app.use(haltOnTimedout)
 
 const PORT = +process.env.PORT || 3000
 app.listen(PORT, () => { logger.info(`Server running on port: ${PORT}`) })
