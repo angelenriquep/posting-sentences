@@ -2,6 +2,11 @@
 
 This project fulfills the requirements outlined in the challenge document.
 
+## Deploy
+
+The api has been deployed using render free tier, more info: Render: Cloud
+Application Hosting for Developers [link](https://render.com)
+
 ## Installation
 
 A Makefile has been provided for easy setup:

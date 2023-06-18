@@ -1,17 +1,16 @@
 #!/bin/bash
 
-# Navigate to the src/packages directory
-cd ./src/packages
+# cd ./src/packages
 
-# Loop through each package directory
-for package_dir in */; do
-  # Enter the package directory
-  cd "$package_dir"
-  
-  # Execute npm install
-  npm install
+# for dir in */; do
+#   if [ -d "$dir" ]; then
+#     cd "$dir" || continue
+#     echo "Installing dependencies for $dir..."
+#     npm install
+#     cd ..
+#   fi
+# done
+# cd ../../
+# done
 
-  # Return to the src/packages directory
-  cd ..
-cd ../../
-done
+cd src/packages/deepl-api && npm i && cd .. && cd .. && cd .. && cd src/packages/firestore && npm i && cd .. && cd .. && cd .. && cd src/packages/logger && npm i

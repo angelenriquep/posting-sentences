@@ -1,7 +1,7 @@
-.PHONY: install-packages install-deps load-env
+.PHONY: load-env install-packages install-deps
 
 install-packages:
-	./install-packages.sh
+	. ./install-packages.sh
 
 install-deps:
 	npm install
