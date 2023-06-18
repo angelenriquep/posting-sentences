@@ -1,4 +1,3 @@
-// Middleware to check for Base64 encoded cookie
 export const checkAuthToken = (req, res, next) => {
   const { authorization } = req.headers
 

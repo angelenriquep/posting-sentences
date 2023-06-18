@@ -1,21 +1,45 @@
-node version 20.XXX
+# Senteces Web API
 
-Acuerdate de borrar el firebase, y de hacerlo globalmente
+This project fulfills the requirements outlined in the challenge document.
 
-mixeado de modulos y module.export
+## Installation
 
-pin las semicomas en el linter?
+A Makefile has been provided for easy setup:
 
-Acuerdate de meter los middlewares
+```sh
+make
+make install-packages
+make install-deps
+```
 
-SACCA EL SENTENCES A UNA CONSTANTEEEE!!
+This command will install the necessary packages and dependencies.
 
-middlewares para asegurar que llega la data
+## Run
 
-UNIFICA TODOS LOS TIPIS DE EXPORT
+To start the API, use the following command:
 
-saqnitizacion de datos??
+```sh
+npm run start
+```
 
-mention we need to create 2 index??
+This will run the API using Node.js.
 
-indica los cambios del formato del fichero y porque
+## Assumptions
+
+- The project has been designed with modularity in mind, allowing for easy reuse
+  of code if the project is split into microservices in the future.
+The Node.js versions 18 and 20 are supported.
+- The input data file has been modified to include a specific field called
+  "category" for better organization and to enable the use of indexes for
+  pagination in Firebase.
+- While using a tool like Lerna for dependency management is an option, it can
+  complicate the deployment process on platforms like Render.com. Therefore, a
+  Linux executable has been provided for installing the dependencies.
+- Data sanitization has been omitted due to time constraints.
+- Please note that the above instructions assume you are running the commands on
+  a Linux or macOS system. If you are on Windows, consider using Git Bash or a
+  similar shell environment to execute the commands.
+  
+## Author
+
+Angel E
