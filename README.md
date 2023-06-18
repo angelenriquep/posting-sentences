@@ -17,3 +17,5 @@ UNIFICA TODOS LOS TIPIS DE EXPORT
 saqnitizacion de datos??
 
 mention we need to create 2 index??
+
+indica los cambios del formato del fichero y porque

@@ -14,12 +14,12 @@ const addSentence = async (req, res) => {
 
 const getSentences = async (req, res) => {
   try {
-    const { order, offset, lmt } = req.query
+    const { order, page, pageSize } = req.query
 
-    const querySnapshot = await getCollectionList(order, offset, lmt)
+    const querySnapshot = await getCollectionList(order, page, pageSize)
 
     const sentenceList = querySnapshot.docs.map(doc => {
-      return { id: doc.id, ...doc.data().data }
+      return { id: doc.id, ...doc.data() }
     })
 
     return res.send(sentenceList)
@@ -39,7 +39,7 @@ const getSentence = async (req, res) => {
       return res.send({ data: `sentence not found for id ${id}` })
     }
 
-    return res.send({ id: sentence.id, ...sentence.data().data })
+    return res.send({ id: sentence.id, ...sentence.data() })
   } catch (err) {
     logger.error(err.message)
     return res.sendStatus(500)

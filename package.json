@@ -13,9 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@pkg/deepl-api": "file:src/packages/deepl-api",
     "@pkg/firestore": "file:src/packages/firestore",
     "@pkg/logger": "file:src/packages/logger",
-    "@pkg/yandex-api": "file:src/packages/yandex-api",
     "body-parser": "1.20.1",
     "connect-timeout": "1.9.0",
     "cors": "2.8.5",

@@ -25,7 +25,7 @@ module.exports = {
     'max-len': [
       'error',
       {
-        code: 80,
+        code: 130,
         tabWidth: 2,
         ignoreComments: true, // "comments": 80
         ignoreUrls: true,
@@ -33,6 +33,6 @@ module.exports = {
         ignoreTemplateLiterals: true
       }
     ],
-    indent: ['error', 2]
+    indent: ['error', 2, { SwitchCase: 1 }]
   }
 }

@@ -41,18 +41,14 @@
     <input type="submit" value="Create Sentence">
   </form>
 
-  <form id="fetch-form">
-    <label for="order">Order:</label>
+
+
+  <div id="pagination">
     <input type="checkbox" id="order" name="order" value="asc">
-
-    <label for="offset">Offset:</label>
-    <input type="number" id="offset" name="offset" min="0" value="1">
-
-    <label for="limit">Limit:</label>
-    <input type="number" id="limit" name="limit" min="1" value="3">
-
-    <input type="submit" value="Fetch Sentences">
-  </form>
+    <button id="prev-button" onclick="prevPage()">&lt;</button>
+    <span id="page-number">Page: 1</span>
+    <button id="next-button" onclick="nextPage()">&gt;</button>
+  </div>
 
   <table id="sentences-table">
     <thead>
@@ -69,21 +65,21 @@
   </table>
 
   <script>
+    let currentPage = 0;
+    const pageSize = 10;
     // Fetch sentences from the API and populate the table
     function fetchSentences(event) {
+
       if (event) {
         event.preventDefault();
       }
 
       const order = document.querySelector('#order').checked ? 'desc' : 'asc';
-      const offset = parseInt(document.querySelector('#offset').value);
-      const limit = parseInt(document.querySelector('#limit').value);
-
       const authToken = 'your-auth-token'; // Replace with your actual authentication token
       const headers = new Headers();
       headers.append('Authorization', `Bearer ${authToken}`);
 
-      const url = `http://localhost:3000/api/sentences?order=${order}&offset=${offset}&lmt=${limit}`;
+      const url = `http://localhost:3000/api/sentences?order=${order}&page=${currentPage}&pageSize=${pageSize}`;
 
       fetch(url, {
         headers: headers
@@ -195,11 +191,26 @@
       alert(`Update sentence with ID: ${sentenceId}`);
     }
 
+
     // Event listener for form submission
     document.querySelector('#create-form').addEventListener('submit', createSentence);
 
-    // Event listener for form submission
-    document.querySelector('#fetch-form').addEventListener('submit', fetchSentences);
+    // Function to navigate to the previous page
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        document.querySelector('#page-number').textContent = `Page: ${currentPage}`;
+        fetchSentences();
+      }
+    }
+
+    // Function to navigate to the next page
+    function nextPage() {
+      currentPage++;
+      document.querySelector('#page-number').textContent = `Page: ${currentPage}`;
+      fetchSentences();
+    }
+
 
     // Initial fetch to populate the table
     fetchSentences();

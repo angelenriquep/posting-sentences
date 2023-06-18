@@ -11,7 +11,7 @@ import {
   deleteDoc,
   updateDoc,
   orderBy,
-  startAt,
+  startAfter,
   limit
 } from 'firebase/firestore'
 
@@ -37,12 +37,10 @@ const createBatch = () => {
 }
 const addBatchData = (batch, record) => {
   const docADocRef = doc(collection(db, COLLECTION_NAME))
-  console.log('read')
   batch.set(docADocRef, record)
 }
 
 const commitBatch = (batch) => {
-  console.log('commit')
   return batch.commit()
 }
 
@@ -65,14 +63,52 @@ const updateCollection = (id, updatedData) => {
   return updateDoc(docRef, { data: { ...updatedData } })
 }
 
-const getCollectionList = (orderStr, offsetNum, limitNum) => {
-  const order = orderStr || 'asc'
-  const offset = offsetNum || 0
-  const lmt = limitNum || 9_999
+/**
+ * @info https://firebase.google.com/docs/firestore/query-data/query-cursors
+ */
+const getCollectionList = async (order, page, pageSize) => {
+  let q = null
 
-  const q = query(firestoreCollection, orderBy('data.category', order), startAt(offset), limit(lmt))
+  console.log(order)
+
+  switch (true) {
+    case page === 0 && order:
+      q = query(firestoreCollection, orderBy('category', order), limit(pageSize || 10))
+      break
+    case order:
+      q = query(firestoreCollection, orderBy('category', order), startAfter(await getPageAtIndex(page, pageSize)), limit(pageSize || 10))
+      break
+    case !order:
+      q = query(firestoreCollection, orderBy('category'), startAfter(await getPageAtIndex(page, pageSize)), limit(pageSize || 10))
+      break
+    default:
+      q = query(firestoreCollection, limit(pageSize || 10))
+      break
+  }
 
   return getDocs(q)
+}
+
+// Horrible implementation, we have to jump between objects to get the pagination
+const getPageAtIndex = async (page, pageSize) => {
+  // Query the first page of docs
+  let first = null
+  let documentSnapshots = null
+  let lastVisible = null
+
+  for (let i = 0; i < page; i++) {
+    if (lastVisible) {
+      first = query(firestoreCollection, orderBy('category'), startAfter(lastVisible), limit(pageSize))
+    } else {
+      first = query(firestoreCollection, orderBy('category'), limit(pageSize))
+    }
+
+    documentSnapshots = await getDocs(first)
+
+    lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1]
+  }
+
+  return lastVisible
 }
 
 export {

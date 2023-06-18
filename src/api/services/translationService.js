@@ -1,20 +1,19 @@
-// import { getTranslation } from '@pkg/yandex-api'
+import { getTraslationForText } from '@pkg/deepl-api'
+import logger from '@pkg/logger'
 
-export const getTranslations = async (req, res) => {
+export const getTranslatedText = async (req, res) => {
   try {
-    // const {
-    //   text
-    // } = req.body
+    const { text } = req.body
 
-    // const textTransation = getTranslation(text)
+    const response = await getTraslationForText(text)
 
-    // if (!translation) {
-    //   return response.notFound(res, 'Translation not found')
-    // }
+    if (response.status !== 200) {
+      return res.send('Translation not found')
+    }
 
-    // return res.send({ data: { text: translation } })
+    return res.send({ data: { text: response.data.translations[0].text } })
   } catch (error) {
-    console.log(error)
+    logger.error(error.message)
     return res.sendStatus(500)
   }
 }

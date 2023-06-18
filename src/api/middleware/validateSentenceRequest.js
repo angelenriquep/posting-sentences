@@ -13,16 +13,16 @@ export const sentenceValidationRulesGetSentence = () => [
     .optional()
     .trim()
     .isIn(['desc', 'asc']).withMessage('Only desc, asc allowed'),
-  query('offset')
+  query('page')
     .optional()
     .trim()
-    .isNumeric().withMessage('Offset is numeric')
-    .isLength({ min: 1, max: 3 }).withMessage('lmt is required'),
-  query('lmt')
+    .isNumeric().withMessage('page is numeric')
+    .isLength({ min: 1, max: 3 }).withMessage('page is exceed length'),
+  query('pageSize')
     .optional()
     .trim()
-    .isNumeric().withMessage('lmt is numeric')
-    .isLength({ min: 1, max: 3 }).withMessage('lmt is required')
+    .isNumeric().withMessage('pageSize is numeric')
+    .isLength({ min: 1, max: 3 }).withMessage('pageSize exceed length')
 ]
 
 export const requestValidation = (req, res, next) => {
