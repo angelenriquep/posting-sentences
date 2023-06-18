@@ -16,12 +16,13 @@ const haltOnTimedout = (req, res, next) => {
 }
 
 const app = express()
+app.set('view engine', 'ejs')
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 app.use(express.static('public'))
 // ⚠️ we should never do this, nodejs should not be serving static files
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')))
+app.get('/', (req, res) => res.render(path.join(__dirname, 'index.html')))
 
 app.use(timeout(120000))
 app.use(bodyParser.json())

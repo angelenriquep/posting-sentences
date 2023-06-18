@@ -15,7 +15,14 @@ A Makefile has been provided for easy setup:
 make all
 ```
 
-A `.env` is required to se up all the required variables.
+A `.env` is required to se up all the required variables. If in render, set it
+manually in the UI.
+
+In render use this command to install all:
+
+```sh
+cd src/packages/deepl-api && npm install && cd .. && cd .. && cd .. && cd src/packages/firestore  && npm install  && cd .. && cd .. && cd ..  && cd src/packages/logger && npm install && cd .. && cd .. && cd .. && npm install
+```
 
 This command will install the necessary packages and dependencies.
 
