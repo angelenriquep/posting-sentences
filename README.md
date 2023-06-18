@@ -7,6 +7,8 @@ This project fulfills the requirements outlined in the challenge document.
 The api has been deployed using render free tier, more info: Render: Cloud
 Application Hosting for Developers [link](https://render.com)
 
+find the project demo here: <https://posting-senteces.onrender.com/>
+
 ## Installation
 
 A Makefile has been provided for easy setup:

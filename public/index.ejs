@@ -79,7 +79,7 @@
       const headers = new Headers();
       headers.append('Authorization', `Bearer ${authToken}`);
 
-      const url = `http://<%= process.env.API_URL %>/api/sentences?order=${order}&page=${currentPage}&pageSize=${pageSize}`;
+      const url = `<%= process.env.API_URL %>/api/sentences?order=${order}&page=${currentPage}&pageSize=${pageSize}`;
 
       fetch(url, {
         headers: headers
