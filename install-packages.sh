@@ -13,4 +13,13 @@
 # cd ../../
 # done
 
-cd src/packages/deepl-api && npm i && cd .. && cd .. && cd .. && cd src/packages/firestore && npm i && cd .. && cd .. && cd .. && cd src/packages/logger && npm i
+cd src/packages/deepl-api
+npm i
+cd ../..
+cd src/packages/firestore
+npm i
+cd ../..
+cd src/packages/logger
+npm i
+cd ../..
+npm i
