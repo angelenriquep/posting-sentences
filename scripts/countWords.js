@@ -25,8 +25,7 @@ rl.on('line', (line) => {
   const sentenceWordCount = countWords(text)
 
   for (const word in sentenceWordCount) {
-    wordCount[word] =
-      (wordCount[word] || 0) + sentenceWordCount[word]
+    wordCount[word] = (wordCount[word] || 0) + sentenceWordCount[word]
   }
 })
 

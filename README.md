@@ -4,10 +4,10 @@ This project fulfills the requirements outlined in the challenge document.
 
 ## Deploy
 
-The api has been deployed using render free tier, more info: Render: Cloud
-Application Hosting for Developers [link](https://render.com)
+The api has been deployed using render free tier. More info: [Render: Cloud
+Application Hosting for Developers](https://render.com)
 
-find the project demo here: <https://posting-senteces.onrender.com/>
+Find the project demo here: <https://posting-senteces.onrender.com/>
 
 ## Installation
 
@@ -20,10 +20,11 @@ make all
 A `.env` is required to se up all the required variables. If in render, set it
 manually in the UI.
 
-In render use this command to install all:
+Use the next command at build stage in Render: (make file not working fine in
+the platoform)
 
 ```sh
-cd src/packages/deepl-api && npm install && cd .. && cd .. && cd .. && cd src/packages/firestore  && npm install  && cd .. && cd .. && cd ..  && cd src/packages/logger && npm install && cd .. && cd .. && cd .. && npm install
+cd src/packages/deepl-api && npm install && cd .. && cd .. && cd .. && cd src/packages/firestore && npm install && cd .. && cd .. && cd .. && cd src/packages/logger && npm install && cd .. && cd .. && cd .. && npm install
 ```
 
 This command will install the necessary packages and dependencies.

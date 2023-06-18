@@ -143,7 +143,7 @@
       headers.append('Authorization', `Bearer ${authToken}`);
       headers.append('Content-Type', 'application/json');
 
-      fetch('http://<%= process.env.API_URL %>/api/sentences', {
+      fetch('<%= process.env.API_URL %>/api/sentences', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(sentence)
@@ -172,7 +172,7 @@
       headers.append('Authorization', `Bearer ${authToken}`);
 
       if (confirm('Are you sure you want to delete this sentence?')) {
-        fetch(`http://<%= process.env.API_URL %>/api/sentences/${sentenceId}`, {
+        fetch(`<%= process.env.API_URL %>/api/sentences/${sentenceId}`, {
           method: 'DELETE',
           headers: headers
         })
@@ -210,7 +210,6 @@
       document.querySelector('#page-number').textContent = `Page: ${currentPage}`;
       fetchSentences();
     }
-
 
     // Initial fetch to populate the table
     fetchSentences();
