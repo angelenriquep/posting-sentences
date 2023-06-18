@@ -1,5 +1,7 @@
 #!/bin/bash
 
+npm cache clean --force
+
 echo "starting deepl"
 cd src/packages/deepl-api 
 npm install 
