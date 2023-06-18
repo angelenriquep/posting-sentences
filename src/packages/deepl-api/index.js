@@ -1,4 +1,5 @@
 import axios from 'axios'
+import 'dotenv/config'
 
 const url = 'https://api-free.deepl.com/v2/translate'
 const TARGET_LANG = 'en-GB'

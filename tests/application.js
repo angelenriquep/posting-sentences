@@ -5,8 +5,7 @@
 import chai, { expect } from 'chai'
 import chaiHttp from 'chai-http'
 import server from '../server.js'
-
-process.env.NODE_ENV = 'test'
+import 'dotenv/config'
 
 chai.should()
 chai.use(chaiHttp)
@@ -17,10 +16,7 @@ describe('Sentences', () => {
       chai.request(server)
         .get('/api/sentences')
         .set('Authorization', 'Bearer your_token_here')
-        .query({
-          page: 0,
-          pageSize: 5
-        })
+        .query({ page: 0, pageSize: 5 })
         .end((err, res) => {
           expect(res).to.have.status(200)
           done()
@@ -35,8 +31,6 @@ describe('Sentences', () => {
         .set('Authorization', 'Bearer your_token_here')
         .end((err, res) => {
           expect(res).to.have.status(200)
-          // expect(res.body.data).should.have.property('text')
-          // expect(res.body.data).should.have.property('cats')
           done()
         })
     })

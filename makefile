@@ -9,4 +9,4 @@ install-deps:
 	npm install
 
 load-env:
-	@set -a && source .env && $(MAKECMDGOALS)
+	source .env

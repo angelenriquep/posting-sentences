@@ -8,6 +8,7 @@ import timeout from 'connect-timeout'
 import { fileURLToPath } from 'url'
 import path, { dirname } from 'path'
 import morgan from 'morgan'
+import 'dotenv/config'
 
 // TODO: Move this to MDW folder
 const haltOnTimedout = (req, res, next) => {
