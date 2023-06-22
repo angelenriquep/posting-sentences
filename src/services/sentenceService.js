@@ -1,8 +1,13 @@
 import { createCollection, getCollectionById, getCollectionList, deleteCollection } from '@pkg/firestore'
+import { sentenceValidationRulesAddSentence } from './sentenceService.validator.js'
+
 import logger from '@pkg/logger'
 
 const addSentence = async (req, res) => {
   try {
+    const a = sentenceValidationRulesAddSentence.validate(req.body)
+    console.log(a)
+
     const sentence = await createCollection(req.body)
 
     return res.send({ data: { id: sentence.id } })

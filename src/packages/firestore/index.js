@@ -1,24 +1,9 @@
+import * as firebase from 'firebase/firestore'
 import { initializeApp } from 'firebase/app'
 import 'dotenv/config'
-import {
-  addDoc,
-  collection,
-  getDoc,
-  query,
-  getDocs,
-  getFirestore,
-  writeBatch,
-  doc,
-  deleteDoc,
-  updateDoc,
-  orderBy,
-  startAfter,
-  limit
-} from 'firebase/firestore'
 
 const COLLECTION_NAME = 'sentences'
 
-// TODO move this to env (SECURITY ISSUE)
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -30,14 +15,15 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
-const firestoreCollection = collection(db, COLLECTION_NAME)
+const db = firebase.getFirestore(app)
+const firestoreCollection = firebase.collection(db, COLLECTION_NAME)
 
 const createBatch = () => {
-  return writeBatch(db)
+  return firebase.writeBatch(db)
 }
+
 const addBatchData = (batch, record) => {
-  const docADocRef = doc(collection(db, COLLECTION_NAME))
+  const docADocRef = firebase.doc(firebase.collection(db, COLLECTION_NAME))
   batch.set(docADocRef, record)
 }
 
@@ -46,22 +32,22 @@ const commitBatch = (batch) => {
 }
 
 const createCollection = (data) => {
-  return addDoc(firestoreCollection, { data })
+  return firebase.addDoc(firestoreCollection, { data })
 }
 
 const getCollectionById = (id) => {
-  const docRef = doc(db, COLLECTION_NAME, id)
-  return getDoc(docRef)
+  const docRef = firebase.doc(db, COLLECTION_NAME, id)
+  return firebase.getDoc(docRef)
 }
 
 const deleteCollection = (id) => {
-  const docRef = doc(db, COLLECTION_NAME, id)
-  return deleteDoc(docRef)
+  const docRef = firebase.doc(db, COLLECTION_NAME, id)
+  return firebase.deleteDoc(docRef)
 }
 
 const updateCollection = (id, updatedData) => {
-  const docRef = doc(db, COLLECTION_NAME, id)
-  return updateDoc(docRef, { data: { ...updatedData } })
+  const docRef = firebase.doc(db, COLLECTION_NAME, id)
+  return firebase.updateDoc(docRef, { data: { ...updatedData } })
 }
 
 /**
@@ -70,24 +56,32 @@ const updateCollection = (id, updatedData) => {
 const getCollectionList = async (order, page, pageSize) => {
   let q = null
 
-  console.log(order)
-
   switch (true) {
     case page === 0 && order:
-      q = query(firestoreCollection, orderBy('category', order), limit(pageSize || 10))
+      q = firebase.query(firestoreCollection, firebase.orderBy('category', order), firebase.limit(pageSize || 10))
       break
     case order:
-      q = query(firestoreCollection, orderBy('category', order), startAfter(await getPageAtIndex(page, pageSize)), limit(pageSize || 10))
+      q = firebase.query(
+        firestoreCollection,
+        firebase.orderBy('category', order),
+        firebase.startAfter(await getPageAtIndex(page, pageSize)),
+        firebase.limit(pageSize || 10)
+      )
       break
     case !order:
-      q = query(firestoreCollection, orderBy('category'), startAfter(await getPageAtIndex(page, pageSize)), limit(pageSize || 10))
+      q = firebase.query(
+        firestoreCollection,
+        firebase.orderBy('category'),
+        firebase.startAfter(await getPageAtIndex(page, pageSize)),
+        firebase.limit(pageSize || 10)
+      )
       break
     default:
-      q = query(firestoreCollection, limit(pageSize || 10))
+      q = firebase.query(firestoreCollection, firebase.limit(pageSize || 10))
       break
   }
 
-  return getDocs(q)
+  return firebase.getDocs(q)
 }
 
 // Horrible implementation, we have to jump between objects to get the pagination
@@ -99,12 +93,17 @@ const getPageAtIndex = async (page, pageSize) => {
 
   for (let i = 0; i < page; i++) {
     if (lastVisible) {
-      first = query(firestoreCollection, orderBy('category'), startAfter(lastVisible), limit(pageSize))
+      first = firebase.query(
+        firestoreCollection,
+        firebase.orderBy('category'),
+        firebase.startAfter(lastVisible),
+        firebase.limit(pageSize)
+      )
     } else {
-      first = query(firestoreCollection, orderBy('category'), limit(pageSize))
+      first = firebase.query(firestoreCollection, firebase.orderBy('category'), firebase.limit(pageSize))
     }
 
-    documentSnapshots = await getDocs(first)
+    documentSnapshots = await firebase.getDocs(first)
 
     lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1]
   }

@@ -1,3 +1,4 @@
+// Promote this to a separate package
 export const checkAuthToken = (req, res, next) => {
   const { authorization } = req.headers
 
