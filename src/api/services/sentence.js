@@ -1,19 +1,20 @@
 import { createCollection, getCollectionById, getCollectionList, deleteCollection } from '@pkg/firestore'
-import { sentenceValidationRulesAddSentence } from './sentenceService.validator.js'
-
+import { sentenceValidationRulesAddSentence } from '../validators/sentence.js'
 import logger from '@pkg/logger'
 
-const addSentence = async (req, res) => {
+// use deepool?
+const addSentence = async (requestBody) => {
   try {
-    const a = sentenceValidationRulesAddSentence.validate(req.body)
-    console.log(a)
+    const { error, value } = sentenceValidationRulesAddSentence().validate(requestBody)
 
-    const sentence = await createCollection(req.body)
+    if (error) throw new Error(error.details[0].message)
 
-    return res.send({ data: { id: sentence.id } })
+    const sentence = await createCollection(value)
+
+    return sentence.id
   } catch (err) {
     logger.error(err)
-    return res.sendStatus(500)
+    throw new Error(err)
   }
 }
 

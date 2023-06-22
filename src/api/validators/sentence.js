@@ -31,8 +31,8 @@ export const sentenceValidationRulesAddSentence = () => {
       'string.empty': 'category field is required',
       'any.required': 'category field is required'
     }),
-    skills: Joi.array().required().messages({
-      'array.empty': 'skills field is required',
+    skills: Joi.object().required().messages({
+      'object.empty': 'skills field is required',
       'any.required': 'skills field is required'
     })
   })

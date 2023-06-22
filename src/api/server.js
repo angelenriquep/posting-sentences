@@ -1,12 +1,12 @@
-import express from 'express'
-import logger from '@pkg/logger'
-import routes from './router.js'
+import 'dotenv/config'
+import { isAuth, notFound, haltOnTimedout } from './middleware/index.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import { isAuth, notFound } from './middleware/index.js'
-import timeout from 'connect-timeout'
+import express from 'express'
+import logger from '@pkg/logger'
 import morgan from 'morgan'
-import 'dotenv/config'
+import routes from './router.js'
+import timeout from 'connect-timeout'
 
 export const startApp = () => {
   const app = express()
@@ -19,10 +19,9 @@ export const startApp = () => {
     stream: { write: message => logger.info(message) }
   }))
   app.use(isAuth.checkAuthToken)
-
-  app.use('/api', routes())
+  app.use('/api/v1', routes())
   app.use(notFound.notFoundMiddleware)
-  // app.use(haltOnTimedout)
+  app.use(haltOnTimedout)
 
   const PORT = +process.env.PORT || 3_000
   app.listen(PORT, () => { logger.info(`Server running on port: ${PORT}`) })
@@ -36,3 +35,6 @@ export const startApp = () => {
 
   return app
 }
+
+// Crea un graceful shutdown
+// Crea un pool de request
