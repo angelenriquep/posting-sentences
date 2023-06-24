@@ -1,26 +1,32 @@
-import { createCollection, getCollectionById, getCollectionList, deleteCollection } from '@pkg/firestore'
 import { sentenceValidationRulesAddSentence } from '../validators/sentence.js'
 
-// use deepool? | our services are not coupeled to the express framework
-const addSentence = async (data) => {
+/**
+ * Agnostic service, it does not case about implementations
+ * Composition without integrity restriction at constructor level
+ * Our services are not coupeled to the express framework, we do
+ * not receive callbacks from express
+ * NB: use deepool?
+ */
+
+const addSentence = async (repository, data) => {
   try {
     const { error, value } = sentenceValidationRulesAddSentence().validate(data)
 
     if (error) throw new Error(error.details[0].message)
 
-    const sentence = await createCollection(value)
+    const newSentenceId = await repository.createRecord(value)
 
-    return sentence.id
+    return newSentenceId
   } catch (err) {
     throw new Error(err)
   }
 }
 
-const getSentences = async (data) => {
+const getSentences = async (repository, filter) => {
   try {
-    const { order, page, pageSize } = data
+    const { order, page, pageSize } = filter
 
-    const collection = await getCollectionList(order, page, pageSize)
+    const collection = await repository.getRecors(order, page, pageSize)
 
     const sentences = collection.docs.map(doc => {
       return { id: doc.id, ...doc.data() }
@@ -32,11 +38,9 @@ const getSentences = async (data) => {
   }
 }
 
-const getSentence = async (params) => {
+const getSentence = async (repository, id) => {
   try {
-    const { id } = params
-
-    const sentence = await getCollectionById(id)
+    const sentence = await repository.getRecordById(id)
 
     if (!sentence) {
       return { data: `sentence not found for id ${id}` }
@@ -48,22 +52,19 @@ const getSentence = async (params) => {
   }
 }
 
-const deleteSentence = async (data) => {
+const deleteSentence = async (repository, id) => {
   try {
-    const { id } = data
-
-    // Firebase does not expect to return anything here
-    await deleteCollection(id)
+    await repository.deleteRecord(id)
   } catch (err) {
     throw new Error(err)
   }
 }
 
-const updateSentence = async (data) => {
+const updateSentence = async (repository, data) => {
   try {
     const { id } = data
 
-    await updateSentence(id, data)
+    await repository.updateRecord(id, data)
   } catch (err) {
     throw new Error(err)
   }

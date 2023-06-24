@@ -6,7 +6,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/**/*.js --experimental-vm-modules"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +14,9 @@
   "dependencies": {
     "firebase": "9.22.2",
     "undefined": "^0.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0"
   }
 }

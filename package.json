@@ -11,7 +11,8 @@
     "script-data-load": "node scripts/dataLoader.js",
     "script-count": "node scripts/countWords.js",
     "test": "mocha tests/**/*.js --experimental-vm-modules",
-    "test:watch": "nodemon --exec mocha tests/**/*.js -experimental-vm-modules"
+    "test:watch": "nodemon --exec mocha tests/**/*.js -experimental-vm-modules",
+    "test:fireStore": "nodemon --exec mocha src/packages/fireStore/tests/**/*.js -experimental-vm-modules"
   },
   "keywords": [],
   "author": "Angel E.",
@@ -44,7 +45,6 @@
     "eslint-plugin-n": "^16.0.0",
     "eslint-plugin-promise": "^6.1.1",
     "mocha": "^10.2.0",
-    "nodemon": "^2.0.22",
-    "sinon": "^15.2.0"
+    "nodemon": "^2.0.22"
   }
 }

@@ -31,8 +31,14 @@ const commitBatch = (batch) => {
   return batch.commit()
 }
 
-const createCollection = (data) => {
-  return firebase.addDoc(firestoreCollection, { data })
+// @info: https://firebase.google.com/docs/reference/js/v8/firebase.firestore.DocumentReference
+const createCollection = async (data) => {
+  try {
+    const response = await firebase.addDoc(firestoreCollection, { data })
+    return response.id
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
 const getCollectionById = (id) => {
@@ -115,10 +121,10 @@ const getPageAtIndex = async (page, pageSize) => {
 // firestoreName in the exposed repository?
 export {
   firestoreCollection,
-  createCollection,
-  getCollectionById,
-  deleteCollection,
-  updateCollection,
+  createCollection as createRecord,
+  getCollectionById as getRecordById,
+  deleteCollection as deleteRecord,
+  updateCollection as updateRecord,
   addBatchData,
   commitBatch,
   getCollectionList,

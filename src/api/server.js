@@ -12,6 +12,11 @@ import promBundle from 'express-prom-bundle'
 // TODO: remember to use compression in reverse proxy
 
 const metricsMiddleware = promBundle({ includeMethod: true })
+const morganConfig = {
+  skip: () => process.env.NODE_ENV === 'test',
+  stream: { write: message => logger.info(message) }
+}
+
 let server = null
 
 export function startApp() {
@@ -20,10 +25,7 @@ export function startApp() {
   app.use(timeout(12_000))
   app.use(bodyParser.json())
   app.use(cors())
-  app.use(morgan('dev', {
-    skip: () => process.env.NODE_ENV === 'test',
-    stream: { write: message => logger.info(message) }
-  }))
+  app.use(morgan('dev', morganConfig))
   app.use(isAuth.checkAuthToken)
   app.use(metricsMiddleware)
   app.use('/api/v1', routes())
