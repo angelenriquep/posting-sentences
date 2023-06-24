@@ -33,6 +33,12 @@ module.exports = {
         ignoreTemplateLiterals: true
       }
     ],
-    indent: ['error', 2, { SwitchCase: 1 }]
+    indent: ['error', 2, { SwitchCase: 1 }],
+    'space-before-function-paren': [
+      'error', {
+        anonymous: 'always',
+        named: 'never',
+        asyncArrow: 'always'
+      }]
   }
 }

@@ -6,17 +6,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "npx mocha tests/**/*.js --experimental-vm-modules"
+    "test": "npx jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "axios": "^1.4.0",
-    "chai": "^4.3.7",
-    "chai-as-promised": "^7.1.1",
-    "mocha": "^10.2.0",
-    "sinon": "^15.1.2"
+    "axios": "^1.4.0"
   },
   "dependencies": {
     "undefined": "^0.1.0"

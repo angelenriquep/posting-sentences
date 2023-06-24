@@ -10,10 +10,12 @@
     "dev": "nodemon server.js",
     "script-data-load": "node scripts/dataLoader.js",
     "script-count": "node scripts/countWords.js",
-    "test": "npx mocha tests/**/*.js --experimental-vm-modules"
+    "test": "mocha tests/**/*.js --experimental-vm-modules",
+    "test:watch": "nodemon --exec mocha tests/**/*.js -experimental-vm-modules",
+    "test:fireStore": "nodemon --exec mocha src/packages/fireStore/tests/**/*.js -experimental-vm-modules"
   },
   "keywords": [],
-  "author": "",
+  "author": "Angel E.",
   "license": "ISC",
   "dependencies": {
     "@pkg/deepl-api": "file:src/packages/deepl-api",
@@ -23,23 +25,26 @@
     "connect-timeout": "1.9.0",
     "cors": "2.8.5",
     "dotenv": "16.3.1",
-    "ejs": "3.1.9",
     "express": "4.18.2",
+    "express-async-handler": "1.2.0",
+    "express-prom-bundle": "6.6.0",
     "express-validator": "7.0.1",
     "firebase": "9.22.2",
+    "joi": "17.9.2",
     "morgan": "1.10.0",
-    "readline": "1.3.0"
+    "prom-client": "14.2.0",
+    "readline": "1.3.0",
+    "winston-daily-rotate-file": "4.7.1"
   },
   "devDependencies": {
+    "chai": "^4.3.7",
     "chai-http": "^4.4.0",
     "eslint": "^8.43.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^16.0.0",
     "eslint-plugin-promise": "^6.1.1",
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.22"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+  }
 }

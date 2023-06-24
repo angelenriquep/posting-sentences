@@ -1,17 +1,17 @@
 import { Router } from 'express'
-import { getSentences, addSentence, getSentence, deleteSentence, updateSentence } from '../services/sentenceService.js'
-import { sentenceValidationRulesAddSentence, requestValidation, sentenceValidationRulesGetSentence, containsIdParamRules } from '../middleware/validateSentenceRequest.js'
+import * as controller from '../controller/sentences.js'
+import asyncHandler from 'express-async-handler'
 
 const sentencesRoutes = Router()
 
 const sentences = (router) => {
   router.use('/sentences', sentencesRoutes)
 
-  sentencesRoutes.get('/', sentenceValidationRulesGetSentence(), requestValidation, getSentences)
-  sentencesRoutes.post('/', sentenceValidationRulesAddSentence(), requestValidation, addSentence)
-  sentencesRoutes.get('/:id', containsIdParamRules(), requestValidation, getSentence)
-  sentencesRoutes.delete('/:id', containsIdParamRules(), requestValidation, deleteSentence)
-  sentencesRoutes.patch('/:id', containsIdParamRules(), requestValidation, updateSentence)
+  sentencesRoutes.get('/', asyncHandler(controller.getSentencesController))
+  sentencesRoutes.post('/', asyncHandler(controller.addSentenceController))
+  sentencesRoutes.get('/:id', asyncHandler(controller.getSentenceController))
+  sentencesRoutes.delete('/:id', asyncHandler(controller.deleteSentenceController))
+  sentencesRoutes.patch('/:id', asyncHandler(controller.updateSentenceController))
 }
 
 export default sentences
