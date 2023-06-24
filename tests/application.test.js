@@ -3,7 +3,7 @@
 /* eslint-disable no-undef */
 import chai, { expect } from 'chai'
 import chaiHttp from 'chai-http'
-import { startApp } from '../../src/api/server.js'
+import { startApp } from '../src/api/server.js'
 
 chai.should()
 chai.use(chaiHttp)

@@ -20,13 +20,13 @@ const getSentences = async (data) => {
   try {
     const { order, page, pageSize } = data
 
-    const querySnapshot = await getCollectionList(order, page, pageSize)
+    const collection = await getCollectionList(order, page, pageSize)
 
-    const sentenceList = querySnapshot.docs.map(doc => {
+    const sentences = collection.docs.map(doc => {
       return { id: doc.id, ...doc.data() }
     })
 
-    return sentenceList
+    return sentences
   } catch (err) {
     throw new Error(err)
   }
