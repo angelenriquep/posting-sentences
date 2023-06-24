@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as controller from '../controller/sentence.js'
-import { requestValidation, containsIdParamRules } from '../middleware/validateSentenceRequest.js'
+import { requestValidation, containsIdParamRules } from '../middleware/index.js'
 import asyncHandler from 'express-async-handler'
 
 const sentencesRoutes = Router()

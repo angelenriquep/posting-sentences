@@ -1,19 +1,17 @@
 import { getTraslationForText } from '@pkg/deepl-api'
-import logger from '@pkg/logger'
 
-export const getTranslatedText = async (req, res) => {
+export const getTranslatedText = async (data) => {
   try {
-    const { text } = req.body
+    const { text } = data
 
     const response = await getTraslationForText(text)
 
     if (response.status !== 200) {
-      return res.send('Translation not found')
+      return 'Translation not found'
     }
 
-    return res.send({ data: { text: response.data.translations[0].text } })
-  } catch (error) {
-    logger.error(error.message)
-    return res.sendStatus(500)
+    return { text: response.data.translations[0].text }
+  } catch (err) {
+    throw new Error(err)
   }
 }

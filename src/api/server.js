@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { isAuth, notFound, haltOnTimedout } from './middleware/index.js'
+import { isAuth, notFound, haltOnTimedout, errorHandler } from './middleware/index.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
@@ -8,6 +8,8 @@ import morgan from 'morgan'
 import routes from './router.js'
 import timeout from 'connect-timeout'
 import promBundle from 'express-prom-bundle'
+
+// TODO: remember to use compression in reverse proxy
 
 const metricsMiddleware = promBundle({ includeMethod: true })
 let server = null
@@ -25,7 +27,8 @@ export function startApp() {
   app.use(isAuth.checkAuthToken)
   app.use(metricsMiddleware)
   app.use('/api/v1', routes())
-  app.use(notFound.notFoundMiddleware)
+  app.use(errorHandler)
+  app.use(notFound)
   app.use(haltOnTimedout)
 
   const PORT = +process.env.PORT || 3_000
@@ -47,14 +50,25 @@ function gracefulShutdown() {
   server.close(() => {
     logger.info('server closed.')
     // Close any other connections or resources here
+    logger.close()
     process.exit(0)
   })
 
   setTimeout(() => {
-    console.error('could not close connections in time, forcefully shutting down')
+    logger.error('could not close connections in time, forcefully shutting down')
     process.exit(1)
   }, 5000)
 }
 
 process.on('SIGTERM', gracefulShutdown)
 process.on('SIGINT', gracefulShutdown)
+process.on('uncaughtException', (err) => {
+  logger.info(err.name, err.message)
+  logger.info('UNCAUGHT EXCEPTION! 💥 Shutting down...')
+  process.exit(1)
+})
+process.on('unhandledRejection', (reason) => {
+  logger.info(reason.name, reason.message)
+  logger.info('UNHANDLED REJECTION! 💥 Shutting down...')
+  process.exit(1)
+})

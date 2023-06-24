@@ -111,6 +111,8 @@ const getPageAtIndex = async (page, pageSize) => {
   return lastVisible
 }
 
+// Expose in our api controlled, not exposing implementation, remove
+// firestoreName in the exposed repository?
 export {
   firestoreCollection,
   createCollection,

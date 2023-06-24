@@ -14,7 +14,7 @@
     "test:watch": "nodemon --exec npx mocha tests/**/*.js -experimental-vm-modules"
   },
   "keywords": [],
-  "author": "",
+  "author": "Angel E.",
   "license": "ISC",
   "dependencies": {
     "@pkg/deepl-api": "file:src/packages/deepl-api",
@@ -32,7 +32,8 @@
     "joi": "17.9.2",
     "morgan": "1.10.0",
     "prom-client": "14.2.0",
-    "readline": "1.3.0"
+    "readline": "1.3.0",
+    "winston-daily-rotate-file": "4.7.1"
   },
   "devDependencies": {
     "chai": "^4.3.7",
