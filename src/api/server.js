@@ -8,6 +8,7 @@ import morgan from 'morgan'
 import routes from './router.js'
 import timeout from 'connect-timeout'
 import promBundle from 'express-prom-bundle'
+import helmet from 'helmet'
 
 // TODO: remember to use compression in reverse proxy
 
@@ -24,7 +25,12 @@ export function startApp() {
 
   app.use(timeout(12_000))
   app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({ extended: true }))
   app.use(cors())
+  app.use(helmet.xssFilter())
+  app.use(helmet.noSniff())
+  app.use(helmet.hidePoweredBy())
+  app.use(helmet.frameguard({ action: 'deny' }))
   app.use(morgan('dev', morganConfig))
   app.use(isAuth.checkAuthToken)
   app.use(metricsMiddleware)
